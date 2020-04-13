@@ -2,47 +2,22 @@ import React, { useState } from "react";
 import Error from "../error/error";
 import { errorMessages } from "../../../static/static";
 
-import { makeStyles } from "@material-ui/core/styles";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
 import InputLabel from "@material-ui/core/InputLabel";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import FormControl from "@material-ui/core/FormControl";
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    "& > *": {
-      margin: theme.spacing(0),
-      minWidth: "100%"
-    }
-  },
-  input: {
-    fontWeight: "bold",
-    color: "#487BEA"
-  }
-}));
+import formatCurrency from "../../../utils/formatCurrency";
+import useStyles from "./input.style";
 
 const placeholderText = "00.00";
 
 const InputControl = props => {
   const classes = useStyles();
-
-  const { label, disabled, onChange, curr, val } = props;
+  const { label, onChange, curr, val } = props;
 
   const [showErr, setShowErr] = useState(false);
   const [value, setValue] = useState(val);
-
-  const formatCurrency = amount => {
-    const temp = amount.split(".").join("");
-    if (temp.length > 0) {
-      if (temp === ".") {
-        return "";
-      } else {
-        return temp.slice(0, -2) + "." + temp.slice(-2);
-      }
-    } else {
-      return temp;
-    }
-  };
 
   const handleChange = e => {
     const newVal = e.target.value;
@@ -61,6 +36,7 @@ const InputControl = props => {
     <FormControl fullWidth className={classes.margin} variant="outlined">
       <InputLabel htmlFor="outlined-adornment-amount">Amount</InputLabel>
       <OutlinedInput
+        autoFocus
         className={classes.input}
         id="outlined-adornment-amount"
         value={value}
@@ -68,7 +44,6 @@ const InputControl = props => {
           <InputAdornment position="start">{curr}</InputAdornment>
         }
         error={showErr}
-        disabled={disabled}
         label={label}
         variant="outlined"
         onChange={handleChange}

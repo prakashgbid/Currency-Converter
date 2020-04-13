@@ -1,5 +1,8 @@
 import React, { useReducer } from "react";
-import { store, reducer, initialState } from "./store/store";
+
+import initialState from "./store/initialState";
+import reducer from "./store/reducers";
+import { store } from "./store/store";
 import ErrorBoundry from "./components/errorBoundry/errorBoundry.component";
 import CurrencyConverter from "./components/currencyConverter/currencyConverter";
 

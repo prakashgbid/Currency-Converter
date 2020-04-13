@@ -1,15 +1,14 @@
 import { makeStyles } from "@material-ui/core/styles";
+import { green } from "@material-ui/core/colors";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    "& > *": {
-      margin: theme.spacing(0),
-      minWidth: "100%"
+    "& > svg": {
+      margin: theme.spacing(2)
     }
   },
-  input: {
-    fontWeight: "bold",
-    color: "#487BEA"
+  svg: {
+    color: green[500]
   }
 }));
 

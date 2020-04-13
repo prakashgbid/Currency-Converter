@@ -1,23 +1,15 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import AccountBalanceIcon from "@material-ui/icons/AccountBalance";
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1,
-    align: "center"
-  },
-  logo: {
-    marginRight: theme.spacing(2),
-    color: "red"
-  }
-}));
+import { lang } from "../../../static/static";
+import useStyles from "./header.style";
 
 const HeaderController = () => {
   const classes = useStyles();
+  const { headerTitle } = lang.en;
 
   return (
     <div className={classes.root}>
@@ -25,7 +17,7 @@ const HeaderController = () => {
         <Toolbar variant="dense">
           <AccountBalanceIcon className={classes.logo} />
           <Typography variant="h6" color="inherit">
-            Currency Converter
+            {headerTitle}
           </Typography>
         </Toolbar>
       </AppBar>
