@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-import SwapHorizIcon from '@material-ui/icons/SwapHoriz';
+import SwapHorizIcon from "@material-ui/icons/SwapHoriz";
 import ArrowRightAltIcon from "@material-ui/icons/ArrowRightAlt";
 import currency from "../../data/currency";
 import HeaderController from "../coreUI/header/header.component";
@@ -44,7 +44,12 @@ const useStyles = makeStyles(theme => ({
 const CurrencyConverter = () => {
   const classes = useStyles();
   const { state, dispatch } = useContext(store);
-  const{baseCurrSymbol,convertedCurrSymbol, baseCurrAmount, convertedCurrRate} = state;
+  const {
+    baseCurrSymbol,
+    convertedCurrSymbol,
+    baseCurrAmount,
+    convertedCurrRate
+  } = state;
 
   async function getExchangeRateAsync(baseCurrSymbol) {
     let response = await fetch(
@@ -54,27 +59,29 @@ const CurrencyConverter = () => {
     return data;
   }
 
-  useEffect(()=>{
-    console.log(baseCurrSymbol + ' ' +convertedCurrSymbol);
-    
+  useEffect(() => {
+    console.log(baseCurrSymbol + " " + convertedCurrSymbol);
+
     getExchangeRateAsync(baseCurrSymbol)
-    .then(data =>{
-      const {rates} = data;
-      const convertedCurrRate = rates[convertedCurrSymbol];
-      dispatch({
-        type: SET_EXCHANGE_RATES,
-        payload: { exchangeRates: rates, convertedCurrRate:convertedCurrRate }
+      .then(data => {
+        const { rates } = data;
+        const convertedCurrRate = rates[convertedCurrSymbol].toFixed(2);
+        dispatch({
+          type: SET_EXCHANGE_RATES,
+          payload: {
+            exchangeRates: rates,
+            convertedCurrRate: convertedCurrRate
+          }
+        });
+      })
+      .catch(reason => {
+        console.log("API response error" + reason.message);
+        dispatch({
+          type: SET_EXCHANGE_RATES,
+          payload: { exchangeRates: null }
+        });
       });
-    })
-    .catch(reason => {
-      console.log('API response error' + reason.message);
-      dispatch({
-        type: SET_EXCHANGE_RATES,
-        payload: { exchangeRates: null }
-      });
-    });
-    
-  },[baseCurrSymbol, convertedCurrSymbol]); 
+  }, [baseCurrSymbol, convertedCurrSymbol, dispatch]);
 
   const handleBaseCurrChange = payload => {
     dispatch({
@@ -84,9 +91,9 @@ const CurrencyConverter = () => {
   };
 
   const handleConvertedCurrChange = payload => {
-    dispatch({ 
-      type: SET_CONVERTED_CURRENCY, 
-      payload 
+    dispatch({
+      type: SET_CONVERTED_CURRENCY,
+      payload
     });
   };
 
@@ -100,7 +107,7 @@ const CurrencyConverter = () => {
   return (
     <div className={classes.root}>
       <Grid container direction="row" justify="center" spacing={3}>
-        <Grid 
+        <Grid
           container
           item
           direction="row"
@@ -108,7 +115,8 @@ const CurrencyConverter = () => {
           alignItems="center"
           xs={12}
           sm={12}
-          spacing={3}>
+          spacing={3}
+        >
           <HeaderController />
         </Grid>
 
@@ -169,9 +177,12 @@ const CurrencyConverter = () => {
           <Grid item xs={2}>
             <ArrowRightAltIcon className={classes.arrowRight} />
           </Grid>
-          
+
           <Grid item xs={5}>
-  <h3>{currency[convertedCurrSymbol].symbol}: {baseCurrAmount * convertedCurrRate}</h3>
+            <h3 className={classes.h3}>
+              {currency[convertedCurrSymbol].symbol}:{" "}
+              {(baseCurrAmount * convertedCurrRate).toFixed(2)}
+            </h3>
           </Grid>
         </Grid>
       </Grid>
